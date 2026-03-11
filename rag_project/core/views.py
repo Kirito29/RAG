@@ -16,6 +16,28 @@ import numpy as np
 from django.conf import settings
 from openai import OpenAI
 
+from django.views.decorators.csrf import csrf_exempt
+
+from core.ai_engine.chat_engine import ChatEngine
+
+
+@csrf_exempt
+def chat_api(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        question = data.get("message")
+
+        engine = ChatEngine()
+
+        answer = engine.ask(question)
+
+        return JsonResponse({
+            "response": answer
+        })
+        
 class HomeView_main(TemplateView):
     template_name = "core/home.html"
 

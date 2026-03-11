@@ -13,22 +13,40 @@
 {% endfor %}
 </ul>
 ------------------------------------------------------------------
-<h2>Documents</h2>
+<h2>AI Document Assistant</h2>
 
-<ul>
-{% for file in files %}
-<li>{{ file }}</li>
-{% endfor %}
-</ul>
+<input id="question" placeholder="Ask a question..." style="width:300px;">
+<button onclick="askAI()">Send</button>
 
-<hr>
+<div id="chat"></div>
 
-<h2>Extracted Text</h2>
+<script>
 
-{% for doc in documents %}
-<p>{{ doc }}</p>
-<hr>
-{% endfor %}
+async function askAI(){
+
+    let question = document.getElementById("question").value;
+
+    let response = await fetch("/chat/",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            message:question
+        })
+    });
+
+    let data = await response.json();
+
+    let chat = document.getElementById("chat");
+
+    chat.innerHTML += "<p><b>You:</b> "+question+"</p>";
+    chat.innerHTML += "<p><b>AI:</b> "+data.response+"</p>";
+
+}
+
+</script>
+
 
 
 {% endblock content %}
