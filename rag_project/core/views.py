@@ -20,23 +20,23 @@ from django.views.decorators.csrf import csrf_exempt
 
 from core.ai_engine.chat_engine import ChatEngine
 
+from .ai_engine.vector_store import VectorStore
+from .ai_engine.chat_engine import ChatEngine
 
 @csrf_exempt
 def chat_api(request):
-
     if request.method == "POST":
-
         data = json.loads(request.body)
+        question = data.get("question", "")
 
-        question = data.get("message")
+        # Initialize your vector store
+        store = VectorStore()  # Make sure your index is already built
+        engine = ChatEngine(store)
 
-        engine = ChatEngine()
-
+        # Ask the question
         answer = engine.ask(question)
 
-        return JsonResponse({
-            "response": answer
-        })
+        return JsonResponse({"answer": answer})
         
 class HomeView_main(TemplateView):
     template_name = "core/home.html"

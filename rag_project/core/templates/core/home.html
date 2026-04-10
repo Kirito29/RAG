@@ -32,7 +32,7 @@ async function askAI(){
             "Content-Type":"application/json"
         },
         body: JSON.stringify({
-            message:question
+            question:question
         })
     });
 
@@ -41,7 +41,7 @@ async function askAI(){
     let chat = document.getElementById("chat");
 
     chat.innerHTML += "<p><b>You:</b> "+question+"</p>";
-    chat.innerHTML += "<p><b>AI:</b> "+data.response+"</p>";
+    chat.innerHTML += "<p><b>AI:</b> "+data.answer+"</p>";
 
 }
 

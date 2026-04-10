@@ -1,0 +1,4 @@
+distlib==0.4.0
+filelock==3.25.0
+platformdirs==4.9.4
+python-discovery==1.1.0

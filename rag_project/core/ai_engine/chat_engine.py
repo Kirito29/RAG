@@ -4,40 +4,38 @@ from .vector_store import VectorStore
 
 class ChatEngine:
 
-    def __init__(self):
-
-        self.client = OpenAI()
-
-        self.vector_store = VectorStore()
-
-        self.vector_store.load_index()
-
+    def __init__(self, vector_store):
+        self.vector_store = vector_store
 
     def ask(self, question):
 
-        # search documents
+        # Retrieve relevant docs from vector store
         docs = self.vector_store.search(question)
-        print("SEARCH RESULTS:", docs)
-        context = "\n\n".join(docs)
 
-        prompt = f"""
-You are an AI assistant answering questions using the provided documents.
+        if not docs:
+            return "No relevant documents found."
 
-Documents:
-{context}
+        # Convert list of dicts to a single string for context
+        context = "\n\n".join(
+    [f"[Source: {doc['source']}]\n{doc['text']}" for doc in docs if doc['text'].strip()]
+)
 
-Question:
-{question}
-
-Answer clearly using the information in the documents.
-"""
-
-        response = self.client.chat.completions.create(
-            model="gpt-4.1-mini",
+        # Now you can call your GPT model
+        response = self.vector_store.client.chat.completions.create(
+            model="gpt-4",
             messages=[
-                {"role": "system", "content": "You answer questions based on provided documents."},
-                {"role": "user", "content": prompt}
-            ]
+        {
+            "role": "system",
+            "content": "Answer ONLY using the provided context. If the answer is not in the context, say 'I don't know based on the documents.'"
+        },
+        {
+            "role": "user",
+            "content": f"Context:\n{context}\n\nQuestion: {question}"
+        }
+        ]   
+
         )
 
         return response.choices[0].message.content
+
+
