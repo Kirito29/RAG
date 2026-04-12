@@ -95,9 +95,6 @@ class DocumentReader:
 
     def read_image(self, path):
 
-        # Placeholder for now
-        # PyMuPDF alone does not OCR images
-
         image = Image.open(path)
 
         return f"[Image file detected: {os.path.basename(path)}]"

@@ -20,7 +20,7 @@ class ChatEngine:
     [f"[Source: {doc['source']}]\n{doc['text']}" for doc in docs if doc['text'].strip()]
 )
 
-        # Now you can call your GPT model
+        #Call your GPT model
         response = self.vector_store.client.chat.completions.create(
             model="gpt-4",
             messages=[

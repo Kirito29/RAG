@@ -31,8 +31,7 @@ class VectorStore:
 
     def create_embeddings(self, documents):
 
-    # documents is now a list of dicts
-    # Filter out empty text
+    # documents is now a list of dicts with "text" and "source" keys
         non_empty_docs = [doc for doc in documents if doc["text"].strip()]
 
         if not non_empty_docs:
@@ -114,8 +113,6 @@ class VectorStore:
         if os.path.exists(self.index_path):
 
             self.index = faiss.read_index(self.index_path)
-
-            # 🔥 LOAD DOCUMENTS
             
 
             docs_path = os.path.join(settings.BASE_DIR, "documents.pkl")
@@ -124,11 +121,9 @@ class VectorStore:
                 with open(docs_path, "rb") as f:
                     self.documents = pickle.load(f)
 
-
-
     def search(self, query, k=3):
 
-        self.load_index()  # 🔥 ADD THIS
+        self.load_index() 
 
         response = self.client.embeddings.create(
             model="text-embedding-3-small",

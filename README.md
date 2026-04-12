@@ -32,6 +32,9 @@ pip install -r requirements.txt
 🔑 Environment Variables
 Create a .env file: OPENAI_API_KEY=your_api_key_here
 
+▶️ Run to build index
+vector_store.build_index()
+
 ▶️ Run the App
 python manage.py runserver
 
