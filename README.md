@@ -10,7 +10,7 @@ PDF + text parsing
 
 ✨ Features
 Upload and process PDF/TXT files
-Supports scanned PDFs (OCR-ready if you added it)
+Supports scanned PDFs
 Semantic search using embeddings
 Chat interface for querying documents
 
